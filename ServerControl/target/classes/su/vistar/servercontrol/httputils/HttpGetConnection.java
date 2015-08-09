@@ -34,16 +34,22 @@ public class HttpGetConnection {
         int status = 0;
 
         try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
-            //установка таймаута запроса
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectionRequestTimeout(10000).setConnectTimeout(10000).setSocketTimeout(10000).build();
+            
+            // установка таймаутов запроса
+            RequestConfig requestConfig = 
+                    RequestConfig.custom()
+                    .setConnectionRequestTimeout(10000)
+                    .setConnectTimeout(10000)
+                    .setSocketTimeout(10000)
+                    .build();
 
-            //Делаем GET запрос по заданному url
+            // настройка конфигурации GET запроса
             HttpGet httpget = new HttpGet(url);
             httpget.setConfig(requestConfig);
 
-            //Получаем содержимое в виде строки и записываем его в переменную htmlPage            
+            // выполняем запрос, получаем содержимое в виде строки и записываем его в переменную htmlPage            
             try (CloseableHttpResponse response = httpclient.execute(httpget);) {
+                
                 status = response.getStatusLine().getStatusCode();
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
@@ -58,7 +64,7 @@ public class HttpGetConnection {
                         htmlPage = bufferString.toString();
 
                     } catch (IOException ex) {
-                        log.severe(ex, "Can't connect with " + url);
+                        log.severe(ex, "Can't read content from html response from url " + url);
                     }
                 }
 
@@ -69,8 +75,8 @@ public class HttpGetConnection {
             }
         } catch (IOException ex) {
             log.severe(ex, "Can't connect with " + url);
-
         }
+
         return new GetHtmlPageResult(htmlPage, status);
     }
 

@@ -29,7 +29,7 @@ public class YandexForwardComponent extends CheckerValuesServerComponent {
     public int getCurrentValue() {
         List<String> list = new LinkedList<>();
 
-        //Вызовы исключений таймаута запроса и исключения соединения
+        // Вызовы исключений таймаута запроса и исключения соединения
         try {
             HttpGetConnection.GetHtmlPageResult htmlPageResult = HttpGetConnection.getHtmlPageAndStatus("http://vps1.vistar.su:8082/YandexForward/");
             this.htmlPage = htmlPageResult.htmlPage;
@@ -39,6 +39,7 @@ public class YandexForwardComponent extends CheckerValuesServerComponent {
         } catch(ConnectionException e){
             throw new CheckFailureException(e,"Ошибка проверки!Ошибка соединения!Не возможно загрузить страницу!");
         }
+        
         //Поиск необходимого условия проверки,а именно число обработанных записей(постоянно обновляемое) 
         //с помощью регулярного выражения "Обработано записей\\D*(\\d+)" Результатом будет например: Обработано записей: 1908837,
         //m.group(1) вернет '(\\d+)' в данном случае '1908837'

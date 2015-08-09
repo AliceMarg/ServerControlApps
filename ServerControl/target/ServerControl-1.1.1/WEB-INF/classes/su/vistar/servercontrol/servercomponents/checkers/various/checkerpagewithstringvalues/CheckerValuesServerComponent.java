@@ -29,9 +29,12 @@ public abstract class CheckerValuesServerComponent extends ServerComponent {
     public CurrentStateForComponent.ComponentState performCheck() {
 
         CurrentStateForComponent.ComponentState state = new CurrentStateForComponent.ComponentState(
-                isActive, isCheckError, checkErrorDescription, lastCheckTime, lastSuccessCheckTime, serverStopTime, statusDescription);
+                isActive, isCheckError, checkErrorDescription, lastCheckTime, 
+                lastSuccessCheckTime, serverStopTime, statusDescription);
+        
         //Получение условия проверки
         int value = 0;
+        
         //Получение ошибки сервера и выбрасывание исключеня ошибки проверки
         try {
             value = getCurrentValue();
@@ -46,6 +49,7 @@ public abstract class CheckerValuesServerComponent extends ServerComponent {
         }catch (Exception er) {
             throw new CheckFailureException(er,"Ошибка проверки!Ошибка: " + er);
         }
+        
         //Проверка на статус 200(ОК)
         if (this.status == 200) {
             if (lastValue != null) {
